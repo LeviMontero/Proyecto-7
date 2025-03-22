@@ -1,62 +1,32 @@
-# import libraries
-import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
+import streamlit as st
 
+# Leer los datos
+car_data = pd.read_csv('./vehicles_us_clean.csv')
 
-# Title of the app centered
-st.title('US Vehicle Advertisement Listings')
+# Crear un encabezado
+st.header("Análisis de vehículos: Año, Precio y Condición")
 
+# Crear botones para generar gráficos
+hist_button = st.button('Construir histograma de precios por año de modelo')
+scatter_button = st.button('Construir gráfico de dispersión entre año de modelo y precio')
+boxplot_button = st.button('Construir gráfico de cajas por condición de vehículo')
 
-# Read data from csv file vehicled_us_clean.csv
-df = pd.read_csv('./vehicles_us.csv')
+# Si el botón de histograma es presionado
+if hist_button:
+    # Crear un histograma de los precios por año de modelo
+    fig = px.histogram(car_data, x="model_year", y="price", histfunc="avg", title="Promedio de Precios por Año de Modelo")
+    st.plotly_chart(fig, use_container_width=True)
 
-# Show data in the app
-st.write(df)
+# Si el botón de gráfico de dispersión es presionado
+if scatter_button:
+    # Crear un gráfico de dispersión entre año de modelo y precio, coloreado por condición
+    fig2 = px.scatter(car_data, x='model_year', y='price', color='condition', title="Precio vs Año de Modelo por Condición")
+    st.plotly_chart(fig2, use_container_width=True)
 
-# histogram of the types of vehicles by manufacturer
-st.subheader('Histogram of the types of vehicles by manufacturer')
-fig = px.histogram(df, x='manufacturer', color='type')
-# plot the histogram
-st.plotly_chart(fig)
-
-# histogram of price distribution between manufacturers
-st.subheader('Histogram of price distribution between manufacturers')
-# drop down menu for selecting the manufacturer 1 and 2 
-# index 1 and 2 are used to set default values for the drop down menu
-manufacturer1 = st.selectbox('Manufacturer 1', df['manufacturer'].unique(), index=1)
-manufacturer2 = st.selectbox('Manufacturer 2', df['manufacturer'].unique(), index=2)
-# create a normalized histogram checkbox
-normalized = st.checkbox('Normalized')
-# create a histogram with manufacturer1 and manufacturer2 input
-fig = px.histogram()
-fig.add_trace(go.Histogram(x=df[df['manufacturer'] == manufacturer1]['price'], name=manufacturer1, opacity=0.75, histnorm='percent'))
-fig.add_trace(go.Histogram(x=df[df['manufacturer'] == manufacturer2]['price'], name=manufacturer2, opacity=0.75, histnorm='percent'))
-# normalize the histogram if the checkbox is checked
-if normalized:
-    fig.update_layout(barmode='overlay')
-    fig.update_traces(opacity=0.75)
-# x-axis title
-fig.update_xaxes(title_text='Price')
-# y-axis title
-fig.update_yaxes(title_text='Percentage')
-# plot the histogram
-st.plotly_chart(fig)
-
-
-
-# scatter plot matrix 
-st.subheader('Scatter plot matrix')
-# drop down for each dimension 
-# index 1, 2, and 3 are used to set default values for the drop down menu
-x_axis = st.selectbox('X axis', df.columns, index=1)
-y_axis = st.selectbox('Y axis', df.columns, index=2)
-# drop down for the color
-color = st.selectbox('Color', df.columns, index=3)
-# subheader for the scatter plot matrix that automatically updates
-st.subheader(f'Scatter plot matrix of {x_axis} and {y_axis} by {color}')
-# create the scatter plot matrix
-fig = px.scatter_matrix(df, dimensions=[x_axis, y_axis], color=color)
-# plot the scatter plot matrix
-st.plotly_chart(fig)
+# Si el botón de gráfico de cajas es presionado
+if boxplot_button:
+    # Crear un gráfico de cajas que muestra la distribución de precios por condición
+    fig3 = px.box(car_data, x="condition", y="price", title="Distribución de Precios por Condición de Vehículo")
+    st.plotly_chart(fig3, use_container_width=True)
