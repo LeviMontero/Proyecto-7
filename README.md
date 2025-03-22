@@ -24,7 +24,8 @@ El propósito principal de este proyecto es familiarizarse con la creación y ge
 - Enlazamos nuestro repositorio de github a render y configuramos el despliegue
 
 ## Conclusión y URL
-Hemos completado las siguientes indicaciones:
+Después de concluir todos los pasos, ahora tengo claro cómo trabajar en mi propio entorno virtual y cómo manejar librerías en diferentes rutas. También tengo claro cómo desarrollar mi propia app y desplegarla en la nube, facilitando así el futuro uso de estas herramientas.
+He completado las siguientes indicaciones:
 - Al menos un encabezado con texto.
 - Al menos un histograma.
 - Al menos un gráfico de dispersión.
